@@ -13,16 +13,16 @@
 </head>
 <body>
 <div class="ar-container">
-    <a-scene mindar-image="imageTargetSrc: ./assets/cipher-disk.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: ./assets/cipher-disk-scale-8.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity mindar-image-target="targetIndex: 0">
 
             <a-entity
-                    troika-text="value: SECRET; color: #FFD700; align: center; fontSize: 0.15; anchor: center;"
+                    troika-text="value: СЕКРЕТ; color: #FFD700; align: center; fontSize: 0.2; anchor: center; depthOffset: 0.01;"
                     position="0 0.1 0"
-                    rotation="-90 0 0">
+                    rotation="-90 0 180">
             </a-entity>
 
         </a-entity>
