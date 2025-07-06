@@ -5,7 +5,11 @@ html, body {
 }
 
 body.mindar-ui-overlay {
-    background-color: transparent !important;
+    background: transparent !important;
+}
+
+.ar-container {
+    background: transparent !important;
 }
 
 .ar-container {
