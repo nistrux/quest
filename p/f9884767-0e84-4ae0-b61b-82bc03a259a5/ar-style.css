@@ -4,6 +4,10 @@ html, body {
     overflow: hidden;
 }
 
+body.mindar-ui-overlay {
+    background-color: transparent !important;
+}
+
 .ar-container {
     position: absolute;
     top: 0;
