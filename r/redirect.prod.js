@@ -30,8 +30,7 @@ function decodeShortCode(customBaseString) {
 // ===================================================================
 async function getMappings_prod() {
     const keyData = await getEncryptionKey();
-    const encryptedBase64 = "7bQ2+TE9pyBFv44GKXd6t0blp2hiU/OOcGT5VaU6tawoIN/Eierc3prJdvz1atq1SvGIVbpqTxQTtsrYBl" +
-        "4TNuyQCAoIS3XOtkJDYHVjxwchYhCXrdlvP6nD7g==";
+    const encryptedBase64 = "FWkA6wSXTKqTL6z/O1Lpj3d/tvBPj7kr6/wDNwvdeX3lLRzHasl6GVONzBmNodr7npy8qhGFi5x8E+9ZJLTENUhsZtMbNuxsQXvjX2nO1VYj54zbuDsVeI4Y1iM9byFTSpmtXjSlw21voBwKIRyQYFU=";
 
     try {
         const key = await crypto.subtle.importKey("raw", keyData, "AES-GCM", true, ["decrypt"]);
