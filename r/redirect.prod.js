@@ -30,7 +30,7 @@ function decodeShortCode(customBaseString) {
 // ===================================================================
 async function getMappings_prod() {
     const keyData = await getEncryptionKey();
-    const encryptedBase64 = "FWkA6wSXTKqTL6z/O1Lpj3d/tvBPj7kr6/wDNwvdeX3lLRzHasl6GVONzBmNodr7npy8qhGFi5x8E+9ZJLTENUhsZtMbNuxsQXvjX2nO1VYj54zbuDsVeI4Y1iM9byFTSpmtXjSlw21voBwKIRyQYFU=";
+    const encryptedBase64 = "uEbkN4bVzZhWPY9L17Jt9aVj6szI1zNE3SWE4pDi4LwyF4bArHRXrLjVBzZf5nkXjO/wHPRa7ABr4E5MQe4y3+eZiUELpa89KJ1LCauk+peuEGjUp0sqmV7sdwDmf4NQ1nKeCAk8dbH6gS9kxm2vH5Ae4eNU/6qN2CBdiVDfHVS5K5rZ32aWtEocmr9VVCUvFuCk/0o8FGeJWPkemaqExEWUrn328JiBCY8HTTBqMpTsN34NGiUQztH2Cp+vUu78ZXOCPb4Qo1c2CJ8ev4YtP0cHJF72S3lYefbh3eBJ50jeSluVAPetS9T8YvSgH5QbmPK3+j97q12/0pC+FYwOviwBrFVN6tyw9vUzm8qTpRnSGSFMO/Enakiae4ZOK3O6fXyTaHgQq90A5Ha8SSSdLRdHbmvOuujBX7L/HhfgiVODe4NGiSjz+bAtUfP7PNQ2Dzo1YmNjwDQjdnvo3fm5udpqf8WYozN+QWxDCAvGZzDHP6MOPMB/xiGq3binEAtMJ2hGAPt5I3aLm+RH6UPQ1AgJzjl7kyJrOup8Pjjl+ku5HFnFoZMdRcNQbifUYBJ5ZmMnq4ZDfhbes0RzpcTnSmL4ltuz+rIHJJGIKNDZ35XZJHl71EijSXfUZ1Oyq3Lw30Fr3Cst5JK8RUvFeQQce+spERC5BamS5pofhVFTbwGNhJtmd9K0gIeZPHxz/Mam4JSPGVQDKkz9SOv3DH5oDm6MWwaTx7Z3FkY6fmSdasSdHucPr0V3F7Lcuat30GfxiJMC84me/3CudRdPww5c8r03MdCOVPVCbmsBp5RTp3N9U0RaiKUp9TwjIiLCQWwbv44fZ0XM629KCCMoRaC4DHLa0bWNgzYlk1qdF5xsDDavUWn4o0gnwuPLQ8KUwW6NzoD7JBAA5wQossefoi51NIhEh5FpVJLoflNEJOid6jFXiebp1n29KlWBJDvaMKpfAHXrFhLO197DrBGvwsqv8JTIkhdfJgUwsdMps36bwM6oDiBeg/3d2oCjSTrfeWFU7mMtmcnytHsjycrLBKnBF5UiVpedg0DCXq2O4ti+kY0=";
 
     try {
         const key = await crypto.subtle.importKey("raw", keyData, "AES-GCM", true, ["decrypt"]);
