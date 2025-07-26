@@ -142,6 +142,12 @@
             font-weight: 600;
             color: #ffffff;
         }
+        .info-box .formula {
+            font-size: 12px;
+            font-family: monospace;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
         .warning-text {
             font-size: 12px;
             color: #facc15; /* yellow-500 */
@@ -213,7 +219,7 @@
         <div class="space-y-4">
             <div>
                 <label for="inputText">Исходный текст:</label>
-                <textarea id="inputText" rows="4" placeholder="Привет, мир 123..."></textarea>
+                <textarea id="inputText" rows="4" placeholder="Текст для шифрования..."></textarea>
                 <div id="invalidCharsWarning" class="warning-text"></div>
             </div>
             <div>
@@ -227,10 +233,12 @@
         <div class="info-box">
             <p class="label">Символов в тексте (валидных)</p>
             <p id="inputCount" class="value">0</p>
+            <p class="formula">&nbsp;</p> <!-- Пустой для выравнивания -->
         </div>
         <div class="info-box">
-            <p class="label">Общая длина "стежков"</p>
+            <p class="label">Расчетная длина (в ед.)</p>
             <p id="morseLength" class="value">0</p>
+            <p class="formula">(стежок=1, разделитель=2)</p>
         </div>
     </div>
 
@@ -239,7 +247,7 @@
         <div class="space-y-4">
             <div>
                 <label for="morseInput">Код Морзе (разделитель /):</label>
-                <textarea id="morseInput" rows="4" class="text-green" placeholder=".--. / .-. / .. / .-- / . / - / ..."></textarea>
+                <textarea id="morseInput" rows="4" class="text-green" placeholder="- / . / ... / -"></textarea>
             </div>
             <button id="decodeButton">Расшифровать</button>
             <div>
@@ -283,13 +291,19 @@
     const alphabetGridContainer = document.getElementById('alphabet-grid-container');
 
     const LETTER_SEPARATOR = ' / ';
-    const VALID_CHARS_REGEX = /[^А-ЯЁ0-9]/gi;
-    const VALID_MORSE_REGEX = /[^.\-\s/]/g;
+    const INVALID_CHARS_REGEX = /[^А-ЯЁ0-9]/gi;
 
     function renderAlphabet() {
         let html = '';
-        for (const char in morseCodeMap) {
-            if (char === 'Ё') continue; // Пропускаем дубликат
+        const chars = Object.keys(morseCodeMap).filter(char => char !== 'Ё').sort((a, b) => {
+            const isADigit = !isNaN(parseInt(a));
+            const isBDigit = !isNaN(parseInt(b));
+            if (isADigit && !isBDigit) return 1;
+            if (!isADigit && isBDigit) return -1;
+            return a.localeCompare(b, 'ru');
+        });
+
+        for (const char of chars) {
             const isDigit = !isNaN(parseInt(char));
             html += `
                     <div class="alphabet-cell ${isDigit ? 'digit' : ''}">
@@ -303,9 +317,17 @@
 
     function translateToMorse() {
         const originalText = inputText.value;
-        const textToTranslate = originalText.toUpperCase();
+        const upperText = originalText.toUpperCase();
 
-        const cleanText = textToTranslate.replace(VALID_CHARS_REGEX, '');
+        const invalidChars = {};
+        for(const char of upperText) {
+            if (char.trim() === '') continue;
+            if (!morseCodeMap[char]) {
+                invalidChars[char] = (invalidChars[char] || 0) + 1;
+            }
+        }
+
+        const cleanText = upperText.replace(/[^А-ЯЁ0-9]/g, '');
 
         const morseChars = [];
         for (const char of cleanText) {
@@ -318,27 +340,23 @@
 
         inputCount.textContent = cleanText.length;
 
+        // Расчет длины по формуле: (все точки и тире) + (количество_разделителей * 2)
         const dotDashCount = morseChars.reduce((sum, code) => sum + code.length, 0);
         const separatorCount = morseChars.length > 0 ? morseChars.length - 1 : 0;
-        morseLength.textContent = dotDashCount + separatorCount;
+        const separatorCost = 2;
+        const totalLength = dotDashCount + (separatorCount * separatorCost);
+        morseLength.textContent = totalLength;
 
-        const invalidChars = {};
-        for (const char of originalText) {
-            const upperChar = char.toUpperCase();
-            if (!morseCodeMap[upperChar] && char.trim() !== '') {
-                invalidChars[upperChar] = (invalidChars[upperChar] || 0) + 1;
-            }
-        }
         const invalidEntries = Object.entries(invalidChars);
         if (invalidEntries.length > 0) {
-            invalidCharsWarning.textContent = 'Неподходящие символы: ' + invalidEntries.map(([char, count]) => `${count}x${char}`).join(', ');
+            invalidCharsWarning.textContent = 'Неподходящие символы: ' + invalidEntries.map(([char, count]) => `${count}x"${char}"`).join(', ');
         } else {
             invalidCharsWarning.textContent = '';
         }
     }
 
     function decodeFromMorse() {
-        const cleanedMorseText = morseInput.value.replace(VALID_MORSE_REGEX, '').trim();
+        const cleanedMorseText = morseInput.value.replace(/[^.\-\s/]/g, '').trim();
         morseInput.value = cleanedMorseText;
 
         if (!cleanedMorseText) {
